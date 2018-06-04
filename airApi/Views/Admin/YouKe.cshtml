@@ -1,0 +1,45 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>YouKe</title>
+    <link href="~/Content/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="/script/jquery-1.11.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+<div style="margin: 10px">
+    <p>
+        <button type="button" class="btn btn-primary">添加模块</button>
+    </p>
+</div>
+<div class="container">
+    <div class="table">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>模块名称</th>
+                <th>模块链接</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>首页</td>
+                <td>/Home/Index</td>
+                <td>
+                    <button type="button" class="btn btn-xs btn-warning">修改</button>
+                    <button type="button" class="btn btn-xs btn-danger">删除</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

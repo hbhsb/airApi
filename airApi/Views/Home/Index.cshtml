@@ -1,0 +1,425 @@
+﻿@using airApi.Entity
+@model IEnumerable<airApi.Entity.CityEntity>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .clearfix:after {
+            content: ".";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+
+        .clearfix {
+            zoom: 1;
+        }
+
+        ul, li {
+            list-style: none;
+        }
+
+        img {
+            border: 0;
+        }
+
+        /* qqshop focus */
+        #focus {
+            width: 1193px;
+            height: 283px;
+            overflow: hidden;
+            position: relative;
+        }
+
+            #focus ul {
+                height: 283px;
+                position: absolute;
+            }
+
+                #focus ul li {
+                    float: left;
+                    width: 1193px;
+                    height: 283px;
+                    overflow: hidden;
+                    position: relative;
+                    background: #000;
+                }
+
+                    #focus ul li div {
+                        position: absolute;
+                        overflow: hidden;
+                    }
+
+            #focus .btnBg {
+                position: absolute;
+                width: 721px;
+                height: 20px;
+                left: 0;
+                bottom: 0;
+            }
+
+            #focus .btn {
+                position: absolute;
+                width: 780px;
+                height: 10px;
+                padding: 5px 10px;
+                right: 0;
+                bottom: 0;
+                text-align: right;
+            }
+
+                #focus .btn span {
+                    display: inline-block;
+                    _display: inline;
+                    _zoom: 1;
+                    width: 25px;
+                    height: 10px;
+                    _font-size: 0;
+                    margin-left: 5px;
+                    cursor: pointer;
+                    background: red;
+                }
+
+                    #focus .btn span.on {
+                        background: #fff;
+                    }
+
+            #focus .preNext {
+                width: 45px;
+                height: 100px;
+                position: absolute;
+                top: 90px;
+                background: url(img/sprite.png) no-repeat 0 0;
+                cursor: pointer;
+            }
+
+            #focus .pre {
+                left: 0;
+            }
+
+            #focus .next {
+                right: 0;
+                background-position: right top;
+            }
+        .select2-search__field {
+            min-height: 30px;
+        }
+        .select2 {
+            width: 200% !important;
+        }
+    </style>
+
+    <link href="~/Content/select2/css/select2.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PM25.in | PM2.5(细颗粒物)及空气质量指数(AQI)实时查询！</title>
+    <meta content="提供PM2.5(细颗粒物)及空气质量指数(AQI)实时查询的网站，同时开放PM2.5监测数据查询的API给开发者使用！" name="description">
+    <meta content="pm2.5,pm2.5查询,pm25,pm2.5 api,空气质量查询,空气质量指数(aqi),空气污染指数,细颗粒物,雾霾,空气质量新标准,颗粒物(粒径小于等于2.5μm),空气质量指数实时报" name="keywords">
+
+
+
+    <link href="/css/application.css" rel="stylesheet" />
+
+    <meta content="authenticity_token" name="csrf-param">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="~/Content/select2/js/select2.min.js"></script>
+    <script>
+        function yedColor(str) {
+            switch (str) {
+            case "优质":
+                return "<span style='background-color: #00E400; float: left; display: inline; padding: 4px 15px; margin: 0px 0px 3px 10px; color: #fff;'>优质</span>";
+            case "良好":
+                return "<span style='background-color: #FFFF00; float: left; display: inline; padding: 4px 15px; margin: 0px 0px 3px 10px; color: #fff;'>良好</span>";
+            case "轻度污染":
+                return "<span style='background-color: #FF7E00; float: left; display: inline; padding: 4px 15px; margin: 0px 0px 3px 10px; color: #fff;'>轻度污染</span>";
+            case "中度污染":
+                return "<span style='background-color: #FF0000; float: left; display: inline; padding: 4px 15px; margin: 0px 0px 3px 10px; color: #fff;'>中度污染</span>";
+            case "重度污染":
+            case "严重污染":
+                return "<span style='background-color: #99004C; float: left; display: inline; padding: 4px 15px; margin: 0px 0px 3px 10px; color: #fff;'>重度污染</span>";
+            default:
+                return "<span style='background-color: blue; float: left; display: inline; padding: 4px 15px; margin: 0px 0px 3px 10px; color: #fff;'>" + str + "</span>";
+            }
+        }
+        function yedImg(str) {
+            switch (str) {
+            case "优质":
+                return "<img style='position: absolute; right: 90px; top: 200px' src='/image/jiankang_you.png'>";
+            case "良好":
+                return "<img style='position: absolute; right: 90px; top: 200px' src='/image/jiankang_liang.png'>";
+            case "轻度污染":
+                return "<img style='position: absolute; right: 90px; top: 200px' src='/image/jiankang_qing.png'>";
+            case "中度污染":
+                return "<img style='position: absolute; right: 90px; top: 200px' src='/image/jiankang_zhong.png'>";
+            case "重度污染":
+            case "严重污染":
+                return "<img style='position: absolute; right: 90px; top: 200px' src='/image/jiankang_zhongdu.png'>";
+            default:
+                return "<img style='position: absolute; right: 90px; top: 200px' src='/image/jiankang_liang.png'>";
+            }
+        }
+    </script>
+</head>
+
+<body class="aqis_index" style="background-image: url('/image/banner_bg60.jpg')">
+    <!-- Navbar========================= -->
+    <div class="navbar-wrapper">
+        <div class="container">
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <a type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collaps">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="index.aspx">
+                        <img src="/image/logo.png" />
+                    </a>
+                    <div class="nav-collapse navbar-inverse-collaps collapse" style="height: 0px;">
+                        <ul class="nav">
+                            <li style="margin-top: 5px;">
+                                <a href="/">首页</a>
+                            </li>
+                            <li style="margin-top: 5px;">
+                                <a href="/Sort">排行榜</a>
+                            </li>
+                            <li style="margin-top: 5px;">
+                                <a href="/Map">地图模式</a>
+                            </li>
+                            @if (string.IsNullOrEmpty(ViewBag.username))
+                            {
+                                <li style="margin-top: 5px;">
+                                    <a href="/login">登录</a>
+                                </li>
+                                <li style="margin-top: 5px;">
+                                    <a href="/login/logon">注册</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li style="margin-top: 5px;">
+                                    <a href="/">欢迎 @ViewBag.username</a>
+                                </li>
+                            }
+
+                            <li  style="margin-top: 11px; margin-left: 400px">
+                                @*<input type="text" id="mytext" style="margin-top: 5px; margin-left: 400px"/>*@
+                                <select  id="selProductTypeId" tabindex="-1" class="select2-hidden-accessible" aria-hidden="True"></select>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- end of .nav-collapse -->
+                </div>
+                <!-- end of .navbar-inner -->
+            </div>
+            <!-- end of .navbar -->
+        </div>
+        <!-- end of .container -->
+    </div>
+    <!-- end of .navbar-wrapper -->
+    <!-- Carousel=========================== -->
+    <!-- end of .carousel -->
+    
+<div style="width: 100%; height: 350px">
+    <div style="position: absolute; top: 180px; left: 90px; width: 300px">
+        <div style="margin-bottom: 20px">
+            <a href="/Home/Detail?cityname=@ViewBag.City" style="float: left; display: inline; font-size: 100px; color: #fff; font-family: Arial, Helvetica, sans-serif">
+                @ViewBag.Aqi.aqi
+            </a>
+            <p style="float: left; display: inline; width: 100px">
+                <script>
+                    document.write(yedColor('@ViewBag.Aqi.quality'));
+                </script>
+                @*<span style="background-color: #6eb720; float: left; display: inline; padding: 4px 15px; margin: 0px 0px 3px 10px; color: #fff;">@ViewBag.Aqi.quality</span>*@
+                <span style="float: left; display: inline; height: 20px; line-height: 20px; text-align: center; color: #fff; margin-left: 15px">AQI指数</span>
+            </p>
+            <div style="clear: both; height: 1px; font-size: 1px; overflow: hidden; line-height: 0;background-color: #c3c3c3"></div>
+        </div>
+        <div style="color: #fff; font-size: 14px; line-height: 25px">
+            <p>PM2.5浓度：31微克/立方米</p>
+            <p>击败了全国 @ViewBag.Pre 的城市，目前城市排名 @ViewBag.Sort</p>
+        </div>
+    </div>
+    @*<img style="position: absolute; right: 90px; top: 200px;" src="/image/jiankang_liang.png"/>*@
+    <script>
+        document.write(yedImg('@ViewBag.Aqi.quality'))
+    </script>
+</div>
+
+<div class="container">
+
+
+        <div class="span12" style="margin-top: 0">
+            <!-- 城市列表 -->
+            <div class="span12 cities" style="margin-top: 150px">
+                <div class="hot">
+                    <div class="top">
+                        热门城市：
+
+                    </div>
+                    <div class="bottom">
+                        <ul class="unstyled">
+                            <li><a href="/home/detail?cityname=北京">北京</a></li>
+                            <li><a href="/home/detail?cityname=上海">上海</a></li>
+                            <li><a href="/home/detail?cityname=广州">广州</a></li>
+                            <li><a href="/home/detail?cityname=深圳">深圳</a></li>
+                            <li><a href="/home/detail?cityname=杭州">杭州</a></li>
+                            <li><a href="/home/detail?cityname=天津">天津</a></li>
+                            <li><a href="/home/detail?cityname=成都">成都</a></li>
+                            <li><a href="/home/detail?cityname=南京">南京</a></li>
+                            <li><a href="/home/detail?cityname=西安">西安</a></li>
+                            <li><a href="/home/detail?cityname=武汉">武汉</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- end of .hot -->
+
+                <div class="all">
+                    <div class="top">
+                        全部城市：
+
+                    </div>
+                    <div>
+                        @{
+        int A = 65;
+        for (int i = 0; i < 26; i++)
+        {
+            char temp = (char) A;
+            A ++;
+            <p>@temp</p>
+            <div class="bottom">
+                <ul class="unstyled">
+                    @foreach (CityEntity cityEntity in Model.Where(c => c.EnName.First().ToString().ToUpper().First() == (char)A))
+                    {
+                        <li><a href="/home/detail?cityname=@cityEntity.CnName">@cityEntity.CnName</a></li>
+                    }
+                </ul>
+            </div>
+        }
+                        }
+                    </div>
+                </div>
+
+                <div class="span12 others">
+                    <div class="span3 wiki">
+                        <p>PM2.5百科</p>
+                        <ul class="unstyled">
+                            <li>
+                                <a href="http://www.baike.com/wiki/PM2.5" target="_blank">什么是PM2.5？</a>
+                            </li>
+                            <li>
+                                <a href="http://songshuhui.net/archives/62570" target="_blank">关于PM2.5的十个问答</a>
+                            </li>
+                            <li>
+                                <a href="http://www.szhec.gov.cn/pages/szepb/kqzl/MpKnowledge.html" target="_blank">什么是空气质量指数(AQI)？</a>
+                            </li>
+                            <li>
+                                <a href="http://www.szhec.gov.cn/pages/szepb/kqzl/MpKnowledge1.html" target="_blank">空气质量新标准</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- end of wiki -->
+
+                    <div class="span8.5 platform">
+                        <div class="title">
+                            App下载
+
+                        </div>
+                        <ul>
+                            <li class="chrome">
+                                <div class="control-group">
+                                    <a href="http://www.pm25.in/get_chrome" target="_blank">
+                                        <img alt="Market_chrome_web_store_60" src="./PM25.in _ PM2.5(细颗粒物)及空气质量指数(AQI)实时查询！_files/Market_Chrome_Web_Store_60-d49c4032f54b42d789eebc9e593b29ed.png">
+                                    </a>
+                                    <p>Chrome浏览器插件</p>
+                                </div>
+                            </li>
+                            <li class="ios">
+                                <div class="control-group">
+                                    <a href="http://www.pm25.in/get_ios" target="_blank">
+                                        <img alt="Market_app_store_60" src="./PM25.in _ PM2.5(细颗粒物)及空气质量指数(AQI)实时查询！_files/Market_App_Store_60-9c1b36307c9e34abc5d9d08d67c84dc8.png">
+                                    </a>
+                                    <p>iOS客户端</p>
+                                </div>
+                            </li>
+                            <li class="android">
+                                <div class="control-group">
+                                    <a href="http://www.pm25.in/get_android" target="_blank">
+                                        <img alt="Market_google_play_60" src="./PM25.in _ PM2.5(细颗粒物)及空气质量指数(AQI)实时查询！_files/Market_Google_Play_60-11dfc6e338d59cadbf408727db1dedbb.png">
+                                    </a>
+                                    <p>Android客户端</p>
+                                </div>
+                            </li>
+                            <li class="android_qr">
+                                <div class="control-group">
+                                    <img alt="Pm25_qrcode_android_80" src="./PM25.in _ PM2.5(细颗粒物)及空气质量指数(AQI)实时查询！_files/PM25_QRCode_Android_80-709cadd290db7e5ec958615ec5013c91.png">
+                                    <p><a href="http://www.pm25.in/get_apk" target="_blank">APK下载</a></p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- end of platform -->
+                </div>
+                <!-- end of others -->
+
+                <div class="footer">
+                    <p>
+                        Copyright © 2013-2014<a href="#" target="_blank"> hongyu</a> All Rights Reserved.
+
+                    </p>
+                    <p>
+                        <a href="#" target="_blank">粤ICP备13012270号-6</a>
+                    </p>
+                </div>
+                <div id="back-top" style="display: none;">
+                    <a href="http://www.pm25.in/#top"><span></span>回到顶部</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<script>
+    $(function () {
+        var d = $.map(@Html.Raw(ViewBag.cityJson),
+            function(obj) {
+                obj.id = obj.CnName;
+                obj.text = obj.CnName;
+                return obj;
+            });
+        $("#selProductTypeId").prepend("<option></option>").select2({
+            data: d,
+            placeholder: "选择城市",
+            allowClear: true,
+            width: '100%'
+        });
+        $("#selProductTypeId").val('0').trigger('change');
+        $("#selProductTypeId").change(function() {
+            location.href = "/home/index?city=" + $(this).val();
+        })
+    })
+    //$("#mytext").bind('input propertychange',
+    //    function () {
+    //        $.post("/home/SelectCity",
+    //            {
+    //                "search": $("#mytext").val()
+    //            },
+    //            function(res) {
+    //                console.log(res);
+    //            });
+    //        //console.log($("#mytext").val())
+    //    });
+</script>
+</body>
+</html>
+

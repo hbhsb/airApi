@@ -1,0 +1,198 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.CityName PM2.5及空气质量指数(AQI)</title>
+    <link href="/css/application.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+    <style>
+        td {
+            text-align: center !important;
+        }
+
+        .collapse {
+            display: initial !important;
+        }
+    </style>
+    <script>
+        function yedColor(str) {
+            switch (str) {
+            case "优质":
+                return "<td><span class='label label-success'>优</span></td>";
+            case "良好":
+                return "<td><span class='label label-success' style='background-color:#d6c60f'>良</span></td>";
+            case "轻度污染":
+                return "<td><span class='label label-warning'>轻度污染</span></td>";
+            case "中度污染":
+                return "<td><span class='label label-danger'>中度污染</span></td>";
+            case "重度污染":
+                return "<td><span class='label label-success'  style='background-color:#b414bb'>重度污染</span></td>";
+            case "严重污染":
+                return "<td><span class='label label-success' style='background-color:#6f0474'>严重污染</span></td>";
+            default:
+                return "<td><span class='label label-info'>"+ str +"</span></td>";
+            }
+        }
+    </script>
+</head>
+
+<body class="aqis_live_data" style="background-image: url('/image/banner_bg60.jpg')">
+    <!-- Navbar========================= -->
+<div class="navbar-wrapper">
+    <div class="container">
+        <div class="navbar navbar-inverse">
+            <div class="navbar-inner">
+                <a type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collaps">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="index.aspx">
+                    <img src="/image/logo.png" />
+                </a>
+                <div class="nav-collapse navbar-inverse-collaps collapse" style="height: 0px;">
+                    <ul class="nav">
+                        <li style="margin-top: 5px;">
+                            <a href="/">首页</a>
+                        </li>
+                        <li style="margin-top: 5px;">
+                            <a href="/Sort">排行榜</a>
+                        </li>
+                        <li style="margin-top: 5px;">
+                            <a href="/Map">地图模式</a>
+                        </li>
+                        @if (string.IsNullOrEmpty(ViewBag.username))
+                        {
+                            <li style="margin-top: 5px;">
+                                <a href="/login">登录</a>
+                            </li>
+                            <li style="margin-top: 5px;">
+                                <a href="/login.logon">注册</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li style="margin-top: 5px;">
+                                <a href="/">欢迎 @ViewBag.username</a>
+                            </li>
+                        }
+                        <li style="margin-top: 5px;">
+                            <a>
+                                <asp:Label ID="lab_sess" runat="server" Text="Label"></asp:Label>
+                            </a>
+                        </li>
+                        <li style="margin-top: 5px;">
+                        </li>
+                    </ul>
+                </div>
+                <!-- end of .nav-collapse -->
+            </div>
+            <!-- end of .navbar-inner -->
+        </div>
+        <!-- end of .navbar -->
+    </div>
+    <!-- end of .container -->
+</div>
+
+    <!-- end of .navbar-wrapper -->
+    <!-- Carousel=========================== -->
+    <!-- end of .carousel -->
+    <div class="container" style="margin-top: 320px">
+        <div class="table">
+            <table id="detail-data" class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>排名</th>
+                    <th>城市</th>
+                    <th>AQI</th>
+                    <th>
+                        空气质量<br>
+                        指数类别
+                    </th>
+                    <th>首要污染物</th>
+                    <th>
+                        PM2.5<br>
+                        细颗粒物
+                    </th>
+                    <th>
+                        PM10<br>
+                        可吸入颗粒物
+                    </th>
+                    <th>
+                        CO<br>
+                        一氧化碳
+                    </th>
+                    <th>
+                        NO2<br>
+                        二氧化氮
+                    </th>
+                    <th>
+                        O3<br>
+                        臭氧1小时平均
+                    </th>
+                    <th class="O3_8h_dn">
+                        O3<br>
+                        臭氧8小时平均
+                    </th>
+                    <th>
+                        SO2<br>
+                        二氧化硫
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="myContent">
+                @{
+                    int i = 1;
+                }
+                @foreach (var state in ViewBag.List)
+                {
+                    <tr class="mytag">
+                        <td>@i</td>
+                        <td>@state.area</td>
+                        <td>@state.aqi</td>
+                        <script>
+                            document.write(yedColor('@state.quality'))
+                        </script>
+
+                        <td>@state.primarypollutant</td>
+                        <td>@state.pm25</td>
+                        <td>@state.pm10</td>
+                        <td>@state.co</td>
+                        <td>@state.no2</td>
+                        <td>@state.o3</td>
+                        <td>@state.o38h</td>
+                        <td>@state.so2</td>
+                    </tr>
+                    i++;
+                }
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="footer">
+            <p>
+                Copyright © 2017-2018<a href="#" target="_blank">鸿宇</a> All Rights Reserved.
+
+            </p>
+            <p>
+                <a href="#" target="_blank">粤ICP备13012270号-6</a>
+            </p>
+        </div>
+        <div id="back-top" style="display: none;">
+            <a href="#"><span></span>回到顶部</a>
+        </div>
+    </div>
+<script>
+
+</script>
+</body>
+</html>

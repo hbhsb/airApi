@@ -1,0 +1,26 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>location</title>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SkfC1y8jDj2kv2p45SD0uaPXz8Tf8eSf"></script>
+    <script>
+        function myFun(result){
+            var cityName = result.name;
+            window.location.href = "/Home/index?city=" + cityName;
+        }
+        var myCity = new BMap.LocalCity();
+        myCity.get(myFun);
+    </script>
+</head>
+<body>
+    <div> 
+    </div>
+</body>
+</html>

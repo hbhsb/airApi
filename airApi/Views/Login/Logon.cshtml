@@ -1,0 +1,61 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>后台登录</title>
+    <link href="/Content/login.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="login">
+        <div class="message">管理注册</div>
+        <div id="darkbannerwrap"></div>
+
+        <form method="post">
+            <input id="username" placeholder="用户名" required="" type="text">
+            <hr class="hr15">
+            <input id="password" placeholder="密码" required="" type="password">
+            <hr class="hr15">
+            <input id="secpassword" placeholder="确认密码" required="" type="password">
+            <hr class="hr15">
+            <input value="注册" style="width:100%;" id="sum" type="button">
+            <hr class="hr20">
+            <a href="/Login">去登陆</a>
+        </form>
+
+
+    </div>
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    $("#sum").click(function () {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var secpassword = $("#password").val();
+        if (password === secpassword) {
+            $.post("/login/logon",
+                {
+                    username: username,
+                    password: password
+                }, function(data) {
+                    if (data == "注册成功") {
+                        location.href = "/";
+                    } else {
+                        alert(data);
+                    }
+                });
+        } else {
+            alert("密码不一致");
+        }
+        
+    })
+</script>
+</body>
+</html>

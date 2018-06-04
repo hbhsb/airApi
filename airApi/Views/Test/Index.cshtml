@@ -1,0 +1,324 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">-->
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="keywords" content="天地图" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>政务服务平台</title>
+    <!--<link rel="stylesheet" href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="http://api.tianditu.com/api?v=4.0"></script>
+
+</head>
+<body onLoad="onLoad()">
+
+    <!--地图调用-->
+    <div id="main"></div>
+    <!--下拉菜单-->
+    <div class="select">
+        <!--头部-->
+        <div class="navbar">
+            <div class="logo"></div>
+            <div class="text">政务服务平台</div>
+            <div class="navTab">
+                <img src="images/icon.png" width="100%" />
+                <div class="menu">菜单</div>
+            </div>
+        </div>
+        <!--下部弹出的详情-->
+        <div class="footerbar">
+            <!--下拉框左边-->
+            <div class="footerbar_left">
+                <!--专题logo-->
+                <div class="top"><img src="images/click_zhuanti.png" width="100%" height="100%" /></div>
+                <!--搜索logo-->
+            </div>
+            <!--下拉框右边-->
+            <div class="footerbar_right">
+                <div class="top">
+                    <div class="cont">
+                        <div class="cont_text1">专题</div>
+                        <div class="cont_text2">清除所选</div>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <!--水利工程开始list_1-->
+                    <div class="tabs">水利工程<span class="jiantou_icon"><img src="images/three_dian.png" /></span></div>
+                    <ul class="cont" id="list_1">
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="sz"></span>
+                            <span>水闸</span>
+                            <span><img src="images/shuizha_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="sb"></span>
+                            <span>水坝</span>
+                            <span><img src="images/shuiba_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="bz"></span>
+                            <span>泵站</span>
+                            <span><img src="images/bangzhan_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                    </ul>
+                    <!--水利工程结束-->
+                    <!--教育机构开始list_2-->
+                    <div class="tabs">教育机构<span class="jiantou_icon"><img src="images/three_dian.png" /></span></div>
+                    <ul class="cont" id="list_2">
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="sm"></span>
+                            <span>小学</span>
+                            <span><img src="images/xiaoxue_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="md"></span>
+                            <span>中学</span>
+                            <span><img src="images/zhongxue_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="dx"></span>
+                            <span>大学</span>
+                            <span><img src="images/daxue_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="yry"></span>
+                            <span>幼儿园</span>
+                            <span><img src="images/youeryuan_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                    </ul>
+                    <!--教育机构结束-->
+                    <!--旅游景点开始list_3-->
+                    <div class="tabs">旅游景点<span class="jiantou_icon"><img src="images/three_dian.png" /></span></div>
+                    <ul class="cont" id="list_3">
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="input_5"></span>
+                            <span>5A级景点</span>
+                            <span><img src="images/5a_logo.png" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="input_4" /></span>
+                            <span>4A级景点</span>
+                            <span><img src="images/4a_logo.png" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="input_3" /></span>
+                            <span>3A级景点</span>
+                            <span><img src="images/3a_logo.png" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="input_2" /></span>
+                            <span>2A级景点</span>
+                            <span><img src="images/2a_logo.png" /></span>
+                        </li>
+                    </ul>
+                    <!--旅游景点结束-->
+                    <!--消防设施开始list_4-->
+                    <div class="tabs">消防设施<span class="jiantou_icon"><img src="images/three_dian.png" /></span></div>
+                    <ul class="cont" id="list_4">
+                        <li>
+                            <span><input type="checkbox" class="checkbox"></span>
+                            <span>消防栓</span>
+                            <span><img src="images/xiaofang.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox"></span>
+                            <span>接合器</span>
+                            <span><img src="images/jieheqi_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                    </ul>
+                    <!--消防设施结束-->
+                    <!--司法服务开始list_5-->
+                    <div class="tabs">司法服务<span class="jiantou_icon"><img src="images/three_dian.png" /></span></div>
+                    <ul class="cont" id="list_5">
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="sfs"></span>
+                            <span>司法所</span>
+                            <span><img src="images/JusticBureau_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="lssws"></span>
+                            <span>律师事务所</span>
+                            <span><img src="images/firm_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="yzzx"></span>
+                            <span>援助中心</span>
+                            <span><img src="images/legalCenter_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="jdjg"></span>
+                            <span>鉴定机构</span>
+                            <span><img src="images/jianding_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="gzc"></span>
+                            <span>公证处</span>
+                            <span><img src="images/nativeoffice_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                    </ul>
+                    <!--司法服务结束-->
+                    <!--公路设施开始list_6-->
+                    <div class="tabs">公路设施<span class="jiantou_icon"><img src="images/three_dian.png" /></span></div>
+                    <ul class="cont" id="list_6">
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id=""></span>
+                            <span>限高架</span>
+                            <span><img src="images/gao.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id=""></span>
+                            <span>百米桩</span>
+                            <span><img src="images/bai.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id=""></span>
+                            <span>里程碑</span>
+                            <span><img src="images/licheng.png" width="24px;" height="24px;" /></span>
+                        </li>
+
+                    </ul>
+                    <!--公路设施结束-->
+                    <!--地下管网开始list_7-->
+                    <div class="tabs">地下管网<span class="jiantou_icon"><img src="images/three_dian.png" /></span></div>
+                    <ul class="cont" id="list_7">
+                        <li>
+                            <span><input type="checkbox" class="checkbox"></span>
+                            <span>热力</span>
+                            <span><img src="images/reli_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox"></span>
+                            <span>燃气</span>
+                            <span><img src="images/ranqi_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox"></span>
+                            <span>给水</span>
+                            <span><img src="images/geishui_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox"></span>
+                            <span>排水</span>
+                            <span><img src="images/paishui_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox"></span>
+                            <span>电信</span>
+                            <span><img src="images/dianxin_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox"></span>
+                            <span>电力</span>
+                            <span><img src="images/dianli_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                    </ul>
+                    <!--地下管网结束-->
+                    <!--安全监督开始list_8-->
+                    <div class="tabs">安全监督<span class="jiantou_icon"><img src="images/three_dian.png" /></span></div>
+                    <ul class="cont" id="list_8">
+                        <li>
+                            <span><input type="checkbox" class="checkbox"></span>
+                            <span>危化企业</span>
+                            <span><img src="images/weihuaqiye_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox"></span>
+                            <span>摄像头</span>
+                            <span><img src="images/shexiangtou.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox"></span>
+                            <span>重点设施</span>
+                            <span><img src="images/zhongdiansheshi_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+
+                    </ul>
+                    <!--安全监督结束-->
+                    <!--高新企业开始list_9-->
+                    <div class="tabs">高新企业<span class="jiantou_icon"><img src="images/three_dian.png" /></span></div>
+                    <ul class="cont" id="list_9">
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="littleCompany"></span>
+                            <span>小巨人企业</span>
+                            <span><img src="images/littlestrong_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="scienceCompany"></span>
+                            <span>新技术企业</span>
+                            <span><img src="images/science_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                    </ul>
+                    <!--高新企业结束-->
+                    <!--武清区域开始list_10-->
+                    <div class="tabs">武清信息<span class="jiantou_icon"><img src="images/three_dian.png" /></span></div>
+                    <ul class="cont" id="list_10">
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="wqqy"></span>
+                            <span>武清区域图</span>
+                            <span><img src="images/quyu.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="wqqyg"></span>
+                            <span>武清区域国道</span>
+                            <span><img src="images/guodao.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="wqqys"></span>
+                            <span>武清区域省道</span>
+                            <span><img src="images/shengdao.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="cheakbox" id="wqqyt"></span>
+                            <span>武清区城镇</span>
+                            <span><img src="images/red_logo.png" width="24px;" height="24px;" /></span>
+                        </li>
+                    </ul>
+                    <!--武清区域结束-->
+                    <!--天津各区人口面积统计开始list_11-->
+                    <div class="tabs">人口面积<span class="jiantou_icon"><img src="images/three_dian.png" /></span></div>
+                    <ul class="cont" id="list_11">
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="persons"></span>
+                            <span>人口</span>
+                            <span><img src="images/renkou.png" width="24px;" height="24px;" /></span>
+                        </li>
+                        <li>
+                            <span><input type="checkbox" class="checkbox" id="areas"></span>
+                            <span>面积</span>
+                            <span><img src="images/mianji.png" width="24px;" height="24px;" /></span>
+                        </li>
+                    </ul>
+                    <!--天津各区人口面积统计结束-->
+                </div>
+            </div>
+            <div class="bottom_footer">
+                <img src="images/footer_icon.png" />
+            </div>
+        </div>
+        <!--底部-->
+    </div>
+    <script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+    <script type="text/javascript" src="js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="js/jquery.ztree.excheck.js"></script>
+    <script src="js/echarts.js"></script>
+    <script type="text/javascript" src="js/d3.v3.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <!--获取地图api-->
+    <script>
+    var map,marker;
+    var zoom = 8;
+    function onLoad(){
+        map = new T.Map('main',{
+            projectino:"EPSG:900913"
+        });
+        map.centerAndZoom(new T.LngLat(117.477039, 39.281725),zoom);
+    }
+
+    </script>
+</body>
+</html>

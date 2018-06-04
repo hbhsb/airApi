@@ -1,0 +1,164 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        td {
+            text-align: center !important;
+        }
+        th {
+            text-align: center !important;
+        }
+    </style>
+    <link href="~/Content/bootstrap/css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body>
+    <nav style="transition: .8s;transition-timing-function:linear;position: fixed; width: 300px; height: 500px; color: azure; background-color: #202020;z-index: 99999">
+        <div style="margin-left: 30px; font-size: 15px;padding: 20px 10px 20px 0px">你所在的城市 @ViewBag.City</div>
+        <div style="display: flex;margin-left: 30px">
+            <div style="width: 120px; height: 100px;border: .5px solid #ccc" align="center">
+                <div style="font-size: 45px"> @ViewBag.Aqi.aqi</div>
+                <div>AQI指数</div>
+            </div>
+            <div style="width: 120px; height: 100px; border: .5px solid #ccc;margin-left: -1px" align="center">
+                <div style="font-size: 45px;">@ViewBag.Sort</div>
+                <div>目前城市排名 </div>
+            </div>
+        </div>
+        <div style="margin-left: 30px; font-size: 15px; padding: 20px 10px 20px 0px;color: yellow">AQI指数城市排行榜</div>
+        <div class="container">
+            <div class="table" style="color: black">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>城市</th>
+                        <th>AQI指数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        int i = 0;
+                        foreach (var state in ViewBag.List)
+                        {
+                            if (i == 5)
+                            {
+                                break;
+                            }
+                            i++;
+                            <tr>
+                                <td>@i</td>
+                                <td>@state.area</td>
+                                <td>@state.aqi</td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="position: absolute; bottom: -5px; left: 135px">
+            <span id="opentable" style="font-size: 30px" class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+        </div>
+
+    </nav>
+<div id="map">
+    
+</div>
+<canvas id="canvas"></canvas>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=1XjLLEhZhQNUzd93EjU5nOGQ"></script>
+<script type="text/javascript" src="/Content/mapv.js"></script>
+<script src="~/Content/bootstrap/js/bootstrap.js"></script>
+<script>
+    var map = new BMap.Map("map",
+        {
+            enableMapClick: false
+        });
+    map.centerAndZoom(new BMap.Point(105.403119, 38.028658), 5); // 初始化地图,设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+    map.setMapStyle({
+        style: 'midnight'
+    });
+
+    var data = [];
+
+    $.post("http://route.showapi.com/104-41",
+        {
+            "showapi_appid": "59148",
+            "showapi_sign": "67c674e95dca4adbbed78307011f3cc2"
+        },
+        function(res) {
+            res = eval('(' + res + ')');
+            var nodes = res.showapi_res_body.list;
+            var citys = new Array();
+            for (var i = 0; i < nodes.length; i++) {
+
+                if (nodes[i].area.indexOf("地区") > -1) {
+                    // nodes[i].area = nodes[i].area.replace(/地区/,"");
+                }
+                var cityCenter = mapv.utilCityCenter.getCenterByCityName(nodes[i].area);
+                if (cityCenter != null) {
+                    data.push({
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [cityCenter.lng, cityCenter.lat]
+                        },
+                        count: nodes[i].aqi
+                    });
+                }
+
+            }
+            var dataSet = new mapv.DataSet(data);
+
+            var options = {
+                size: 14,
+                gradient: { 0: "#00E400", 0.25: "#FFFF00", 0.55: "#FF7E00", 0.85: "#FF0000", 1.0: "#99004C" },
+                max: 300,
+                draw: 'heatmap'
+            }
+
+            var mapvLayer = new mapv.baiduMapLayer(map, dataSet, options);
+        });
+    $(function() {
+        var isopen = true;
+        $("#opentable").click(function() {
+            if (isopen) {
+                $("nav").css("margin-top", "-470px");
+                $("#opentable").removeClass(" glyphicon-triangle-top").addClass(" glyphicon-triangle-bottom");
+
+            } else {
+                $("nav").css("margin-top", "0");
+                $("#opentable").removeClass(" glyphicon-triangle-bottom").addClass(" glyphicon-triangle-top");
+            }
+            isopen = !isopen;
+        });
+    });
+</script>
+</body>
+
+</html>
